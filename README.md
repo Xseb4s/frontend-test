@@ -1,5 +1,4 @@
-[Open test](https://xseb4s.github.io/frontend-test/) click to check
-# Frontend para la Gestión de Productos y Carrito de Compras
+# [Frontend para la Gestión de Productos y Carrito de Compras](https://xseb4s.github.io/frontend-test/) click to check
 
 ## Descripción
 
@@ -129,3 +128,104 @@ const addCart = async (id: number) => {
     };
 ```
 Este frontend permite interactuar con la API de productos y carrito de compras, proporcionando una experiencia de usuario sencilla y eficiente. El uso de TypeScript y Axios facilita la gestión de datos y las interacciones con la API, mientras que Tailwind CSS permite un diseño limpio y responsive. La función para optimizar las combinaciones de productos dentro de un presupuesto añade un valor adicional para los usuarios al tomar decisiones de compra más inteligentes.
+
+# Despliegue del Frontend
+
+## Despliegue en un VPS
+
+Para desplegar el frontend en un VPS, sigue estos pasos:
+
+### 1. **Configurar el VPS**
+
+Primero, asegúrate de tener un VPS configurado y listo para desplegar. Si aún no tienes un VPS, puedes seguir los pasos descritos en la sección de despliegue del backend (de este README). 
+
+### 2. **Subir el Proyecto al VPS**
+
+Una vez que tengas acceso a tu VPS, sube los archivos del frontend al servidor. Puedes hacer esto utilizando **Git** (si tienes un repositorio remoto) o utilizando **SFTP/FTP** para transferir los archivos manualmente.
+
+Si usas Git:
+```bash
+git clone <URL-de-tu-repositorio>
+cd <nombre-del-repositorio>
+```
+3. Instalar Dependencias
+En tu VPS, asegúrate de tener Node.js y npm instalados. Si no los tienes, sigue los pasos de la sección anterior para instalarlos.
+
+Instala las dependencias del proyecto:
+
+```bash
+npm install
+```
+4. Construir el Proyecto
+Antes de poner en marcha el frontend, necesitas compilarlo para producción. Utiliza el siguiente comando para generar los archivos estáticos:
+
+```bash
+npm run build
+```
+Esto creará una carpeta build con los archivos estáticos listos para ser servidos.
+
+5. Instalar un Servidor HTTP (por ejemplo, Nginx o Serve)
+Si usas Nginx, puedes configurarlo para servir los archivos estáticos. Primero, instala Nginx si no lo tienes:
+
+```bash
+sudo apt install nginx
+```
+Luego, crea una configuración de servidor para tu aplicación en /etc/nginx/sites-available/default que apunte a la carpeta build de tu proyecto:
+
+```nginx
+server {
+    listen 80;
+    server_name <tu_dominio_o_ip>;
+
+    root /ruta/a/tu/proyecto/build;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
+Si prefieres utilizar Serve para servir los archivos estáticos sin configurar un servidor HTTP completo, puedes instalar serve globalmente:
+
+```bash
+sudo npm install -g serve
+serve -s build
+```
+6. Iniciar el Servidor
+Si usas Nginx, reinicia el servicio:
+
+```bash
+sudo systemctl restart nginx
+```
+Si usas Serve, puedes iniciar el servidor con:
+
+```bash
+serve -s build
+```
+7. Configurar el Firewall
+Asegúrate de que el puerto 80 (HTTP) esté abierto en tu firewall para que la aplicación sea accesible desde cualquier navegador.
+
+```bash
+sudo ufw allow 80
+sudo ufw enable
+```
+Despliegue en Vercel
+Vercel es una plataforma de despliegue muy sencilla para aplicaciones frontend, como React. Para desplegar tu aplicación en Vercel, sigue estos pasos:
+
+1. Crear una Cuenta en Vercel
+Si aún no tienes una cuenta en Vercel, dirígete a Vercel y regístrate utilizando tu cuenta de GitHub, GitLab o tu correo electrónico.
+
+2. Conectar el Repositorio de tu Proyecto
+Una vez que inicies sesión en Vercel, conecta tu repositorio de GitHub (o GitLab) a Vercel. Esto permitirá que Vercel acceda a tu código y lo despliegue automáticamente.
+
+3. Configurar el Proyecto
+Vercel detectará automáticamente que estás usando React y configurará tu proyecto para ser desplegado en la plataforma. En la mayoría de los casos, no es necesario realizar configuraciones adicionales, pero si tu proyecto necesita variables de entorno, puedes configurarlas en la interfaz de Vercel.
+
+4. Desplegar
+Haz clic en "Deploy" y Vercel comenzará a compilar y desplegar tu proyecto. El proceso puede tardar unos minutos. Una vez completado, recibirás una URL para acceder a tu aplicación en producción.
+
+5. Configurar un Dominio Personalizado (Opcional)
+Si deseas usar tu propio dominio en lugar de la URL proporcionada por Vercel, puedes configurar tu dominio en la sección de "Domains" de la interfaz de Vercel y actualizar los registros DNS en tu proveedor de dominios para que apunten a Vercel.
+
+Conclusión
+Dependiendo de tus necesidades y preferencias, puedes desplegar tu frontend en un VPS para tener más control sobre la infraestructura o usar Vercel para un despliegue rápido y fácil. Ambos métodos son efectivos y ofrecen ventajas según el caso de uso de tu proyecto.
