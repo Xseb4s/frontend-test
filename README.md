@@ -209,7 +209,7 @@ Asegúrate de que el puerto 80 (HTTP) esté abierto en tu firewall para que la a
 sudo ufw allow 80
 sudo ufw enable
 ```
-Despliegue en Vercel
+## Despliegue en Vercel
 Vercel es una plataforma de despliegue muy sencilla para aplicaciones frontend, como React. Para desplegar tu aplicación en Vercel, sigue estos pasos:
 
 1. Crear una Cuenta en Vercel
