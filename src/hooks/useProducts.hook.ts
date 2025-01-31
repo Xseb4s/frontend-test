@@ -18,36 +18,21 @@ const useProducts = () => {
     };
 
     const findBestCombination = (budget: number): ProductsInterface[] => {
-        const n = productData.length;
-        const dp = Array.from({ length: n + 1 }, () => 
-            Array(budget + 1).fill(0)
-        );
-
-        for (let i = 1; i <= n; i++) {
-            for (let w = 1; w <= budget; w++) {
-                const { price } = productData[i - 1];
-                if (price <= w) {
-                    dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - price] + price);
-                } else {
-                    dp[i][w] = dp[i - 1][w];
-                }
+        const sortedProducts = [...productData].sort((a, b) => b.price - a.price);
+        let remainingBudget = budget;
+    
+        const selectedProducts = sortedProducts.reduce((acc, product) => {
+            if (product.price <= remainingBudget) {
+                acc.push(product);
+                remainingBudget -= product.price;
             }
-        }
-
-        let w = budget;
-        const selectedProducts: ProductsInterface[] = [];
-
-        for (let i = n; i > 0 && w > 0; i--) {
-            if (dp[i][w] !== dp[i - 1][w]) {
-                const product = productData[i - 1];
-                selectedProducts.push(product);
-                w -= product.price;
-            }
-        }
-
-        setFilteredData(selectedProducts.reverse());
+            return acc;
+        }, [] as ProductsInterface[]);
+    
+        setFilteredData(selectedProducts);
         return selectedProducts;
     };
+
 
     useEffect(() => {
         getProducts(); 
